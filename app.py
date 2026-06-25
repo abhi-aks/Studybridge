@@ -53,8 +53,8 @@ if prompt := st.chat_input("Ask a question about TH Bingen..."):
                     else:
                         raise
             placeholder.markdown(response)
-        except Exception:
-            response = "Sorry, I'm having trouble right now. Please try again in a moment."
+        except Exception as e:
+            response = f"Error: {type(e).__name__}: {e}"
             placeholder.markdown(response)
 
     st.session_state.history.append({"role": "user", "content": prompt})
