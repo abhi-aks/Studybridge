@@ -25,6 +25,10 @@ the student contact the International Office at international@th-bingen.de.
 - Respond in the same language the user writes in.
 - Translate German source text naturally — do not paste raw German unless asked.
 - Keep answers concise. Cite the source document for specific numbers or dates.
+- Use the conversation history to understand follow-up questions and references like "it", "that", "there".
+
+Conversation History:
+{history}
 
 Context:
 {context}
@@ -63,7 +67,11 @@ def build_chain():
     prompt = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 
     chain = (
-        {"context": RunnableLambda(retrieve_with_prefix) | format_docs, "question": RunnablePassthrough()}
+        {
+            "context": RunnableLambda(lambda x: retrieve_with_prefix(x["question"])) | format_docs,
+            "question": RunnableLambda(lambda x: x["question"]),
+            "history": RunnableLambda(lambda x: x["history"]),
+        }
         | prompt
         | llm
         | StrOutputParser()

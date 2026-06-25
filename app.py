@@ -39,13 +39,20 @@ if prompt := st.chat_input("Ask a question about TH Bingen..."):
     with st.chat_message("user"):
         st.markdown(prompt)
 
+    # Build history string from last 6 messages (3 turns)
+    recent = st.session_state.history[-6:]
+    history_text = "\n".join(
+        f"{'User' if m['role'] == 'user' else 'Assistant'}: {m['content']}"
+        for m in recent
+    ) or "None"
+
     with st.chat_message("assistant"):
         placeholder = st.empty()
         response = ""
         try:
             for attempt in range(3):
                 try:
-                    for chunk in chain.stream(prompt):
+                    for chunk in chain.stream({"question": prompt, "history": history_text}):
                         response += chunk
                         placeholder.markdown(response + "▌")
                     break
