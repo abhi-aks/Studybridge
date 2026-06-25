@@ -2,7 +2,7 @@ langchain
 langchain-community
 langchain-groq
 langchain-openai
-chromadb
+chromadb==0.5.23
 pdfplumber
 python-dotenv
 streamlit
