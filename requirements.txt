@@ -1,0 +1,10 @@
+langchain
+langchain-community
+langchain-groq
+langchain-openai
+chromadb
+pdfplumber
+python-dotenv
+streamlit
+sentence-transformers
+rank_bm25
