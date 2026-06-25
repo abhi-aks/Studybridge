@@ -6,5 +6,6 @@ chromadb==0.5.23
 pdfplumber
 python-dotenv
 streamlit
+tokenizers>=0.21.0
 sentence-transformers
 rank_bm25
