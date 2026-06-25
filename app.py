@@ -1,6 +1,13 @@
+import os
 import time
 import streamlit as st
 from groq import RateLimitError
+
+# Streamlit Cloud stores secrets in st.secrets — copy them to env vars so rag.py can read them
+for key in ["GROQ_API_KEY", "OPENAI_API_KEY"]:
+    if key in st.secrets:
+        os.environ[key] = st.secrets[key]
+
 from rag import build_chain
 
 st.set_page_config(page_title="StudyBridge — TH Bingen", page_icon="🎓")
