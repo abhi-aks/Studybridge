@@ -3,10 +3,13 @@ import time
 import streamlit as st
 from groq import RateLimitError
 
-# Streamlit Cloud stores secrets in st.secrets — copy them to env vars so rag.py can read them
-for key in ["GROQ_API_KEY", "OPENAI_API_KEY"]:
-    if key in st.secrets:
-        os.environ[key] = st.secrets[key]
+# Load secrets from st.secrets if available (Streamlit Cloud), otherwise fall back to env vars (HuggingFace/Docker)
+try:
+    for key in ["GROQ_API_KEY", "OPENAI_API_KEY"]:
+        if key in st.secrets:
+            os.environ[key] = st.secrets[key]
+except Exception:
+    pass
 
 from rag import build_chain
 
