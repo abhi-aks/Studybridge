@@ -7,5 +7,7 @@ pdfplumber
 python-dotenv
 streamlit
 tokenizers>=0.21.0
+torch>=2.6.0
+torchvision>=0.21.0
 sentence-transformers
 rank_bm25
