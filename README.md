@@ -86,15 +86,19 @@ streamlit run app.py
 The chroma_db folder is already in the repo (stored via Git LFS), so you don't need to run ingestion unless you add new PDFs.
 
 ## Project structure
+
+```
 studybridge/
-├── app.py                 Streamlit UI, streaming, conversation memory
-├── rag.py                 RAG chain, embeddings, retrieval, LLM
-├── ingest.py              One-time ingestion pipeline
-├── chroma_db/             Pre-built vector database (Git LFS)
-├── evaluate1.py           24 manual test cases
-├── evaluate2.py           10 additional test cases
-├── evaluate_ragas.py      RAGAS automated evaluation
-├── Dockerfile             Python 3.11 container for HuggingFace
+├── app.py
+├── rag.py
+├── ingest.py
+├── chroma_db/
+├── evaluate1.py
+├── evaluate2.py
+├── evaluate_ragas.py
+├── Dockerfile
+└── requirements.txt
+```
 └── requirements.txt
 
 ## Limitations
