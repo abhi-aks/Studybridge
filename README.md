@@ -4,10 +4,10 @@ StudyBridge lets you ask questions about TH Bingen, Visa process and nearby dorm
 
 Live app: https://huggingface.co/spaces/abhiaks100/studybridge-thb
 
-##What it does
+## What it does
 You type a question. The app searches through TH Bingen's official PDFs, pulls the most relevant sections, and hands them to an LLM to generate an answer. It also remembers the last few messages, so follow-up questions work the way you'd expect.
 
-##The documents it knows about:
+## The documents it knows about:
 
 Module handbook for MSc Computer Science (programs, ECTS credits)
 Enrollment and examination regulations
@@ -17,10 +17,10 @@ TH Bingen general fact sheet and ERASMUS information
 Full course list with credit hours
 (the official document are updated in 2025 so some answers gives older dates)
 
-##How it works
+## How it works
 The core idea is RAG (Retrieval Augmented Generation). Instead of relying on what an LLM already knows (which doesn't include TH Bingen's specific dormitory prices), you give it the right documents at query time.
 
-##The pipeline has two phases:
+## The pipeline has two phases:
 Ingestion (runs once)
 
 PDFs are read page by page using pdfplumber, which handles German characters properly. Pages are split into overlapping chunks of about 1000 characters. Each chunk gets embedded using intfloat/multilingual-e5-small and stored in ChromaDB on disk.
@@ -45,7 +45,7 @@ LLaMA 3.3 70B via Groq API
      v
 streamed answer
 
-##Technologies used
+## Technologies used
 pdfplumber over pypdf: pypdf garbled German characters into question marks. pdfplumber handles them correctly and also extracts tables properly, which was important for the dormitory pricing PDF.
 
 multilingual-e5-small: Students can ask in English but the documents are in German. This model maps both languages into the same vector space, so an English question can match a German chunk. One catch: it requires a "query:" prefix on questions and "passage:" prefix on stored text. Without those prefixes, evaluation scores dropped from 79% to under 10%.
@@ -56,7 +56,7 @@ Groq over OpenAI: Originally planned to use OpenAI but hit quota issues despite 
 
 HuggingFace Spaces with Docker over Streamlit Cloud: Streamlit Cloud defaulted to Python 3.14 which broke sentence-transformers and chromadb. Docker lets you specify Python 3.11 explicitly, which solved it. HuggingFace gives 16GB RAM on the free tier while Render gave about 512MB.
 
-##Evaluation
+## Evaluation
 Testing the system two ways.
 
 Manual keyword matching (24 questions)
@@ -71,7 +71,7 @@ Faithfulness: 0.554 (how much of the answer is actually supported by the retriev
 
 Answer Relevancy could not be computed because Groq restricts responses to n=1 per call and RAGAS needs n>1 to measure this metric.
 
-##How to run: 
+## How to run: 
 You need to have atleast Python 3.11 and a Groq API key which can be obtained for free using official source. 
 
 git clone https://github.com/abhi-aks/Studybridge.git
@@ -85,7 +85,7 @@ Start the app:
 streamlit run app.py
 The chroma_db folder is already in the repo (stored via Git LFS), so you don't need to run ingestion unless you add new PDFs.
 
-##Project structure
+## Project structure
 studybridge/
 ├── app.py                 Streamlit UI, streaming, conversation memory
 ├── rag.py                 RAG chain, embeddings, retrieval, LLM
@@ -97,7 +97,7 @@ studybridge/
 ├── Dockerfile             Python 3.11 container for HuggingFace
 └── requirements.txt
 
-##Limitations
+## Limitations
 The Groq free tier has a 100k token daily limit, so heavy usage will hit rate limits. The retry logic in rag.py handles temporary spikes but sustained load will eventually fail.
 
 Faithfulness at 0.554 means the LLM occasionally adds things not in the retrieved chunks. A stronger judge model or better chunking strategy would help here.
