@@ -99,7 +99,6 @@ studybridge/
 ├── Dockerfile
 └── requirements.txt
 ```
-└── requirements.txt
 
 ## Limitations
 The Groq free tier has a 100k token daily limit, so heavy usage will hit rate limits. The retry logic in rag.py handles temporary spikes but sustained load will eventually fail.
